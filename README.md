@@ -38,6 +38,7 @@ Zbierka Arduino sketchov pre rôzne senzory, moduly a periférie. Každý modul 
 | TCA9548A | I²C Multiplexer (8 kanálov) | I²C (0x70) |
 | Nokia 5110 | LCD displej 84x48 px | SPI (D3-D7) |
 | 7-Segment (74HC595) | 4-miestny číselný displej | Shift Register (D2-D8) |
+| 7-Segment 3-digit | 3-miestny číselný displej | Priame zapojenie (D2-D11) |
 
 ## Štruktúra projektu
 
@@ -82,6 +83,8 @@ ARE-00/
 │   └── Nokia5110_Displej.ino
 └── SedemSegment_74HC595/
     └── SedemSegment_74HC595.ino
+├── SedemSegment_3digit/
+│   └── SedemSegment_3digit.ino
 ```
 
 ## Zapojenie
@@ -292,6 +295,23 @@ ARE-00/
 
 > 4-miestny displej so spoločnou katódou. Segmenty pripájané cez 220Ω rezistory. Používa multiplexovanie.
 
+### 7-Segmentový displej – 3-digit (priame zapojenie)
+
+| Pin | Arduino Nano |
+|-----|-------------|
+| Segment a | D2 (cez 220Ω) |
+| Segment b | D3 (cez 220Ω) |
+| Segment c | D4 (cez 220Ω) |
+| Segment d | D5 (cez 220Ω) |
+| Segment e | D6 (cez 220Ω) |
+| Segment f | D7 (cez 220Ω) |
+| Segment g | D8 (cez 220Ω) |
+| Digit 1 (stovky) | D9 |
+| Digit 2 (desiatky) | D10 |
+| Digit 3 (jednotky) | D11 |
+
+> Priame zapojenie bez shift registra. Spoločná katóda: digit LOW = zap. Rozsah: 0–999. Každý segment cez 220Ω rezistor!
+
 ## Potrebné knižnice
 
 Všetky knižnice sa dajú nainštalovať cez **Arduino Library Manager** (`Sketch` → `Include Library` → `Manage Libraries...`):
@@ -425,10 +445,16 @@ Každý sketch vypisuje dáta vo formáte JSON na sériový port (115200 baud) k
 {"modul":"Nokia_5110","citac":42,"uptime_s":120,"volna_ram":1234}
 ```
 
-### 7-Segment
+### 7-Segment (4-digit)
 
 ```json
 {"modul":"7Segment","hodnota":1234}
+```
+
+### 7-Segment (3-digit)
+
+```json
+{"modul":"7Segment_3digit","hodnota":456}
 ```
 
 ### Chybový výstup (príklad)
