@@ -8,14 +8,14 @@
  *  Výstup:   JSON cez Serial (115200 baud)
  * 
  *  Zapojenie:
- *    Nokia 5110 VCC  -> 3.3V
- *    Nokia 5110 GND  -> GND
- *    Nokia 5110 CLK  -> D3 (SCLK)
- *    Nokia 5110 DIN  -> D4 (MOSI)
- *    Nokia 5110 DC   -> D5 (Data/Command)
- *    Nokia 5110 CE   -> D6 (Chip Enable)
- *    Nokia 5110 RST  -> D7 (Reset)
- *    Nokia 5110 BL   -> 3.3V cez 330Ω rezistor (podsvietenie)
+ *    Nokia 5110 1 VCC  -> 3.3V
+ *    Nokia 5110 2 GND  -> GND
+ *    Nokia 5110 3  -> D6
+ *    Nokia 5110 4  -> D7
+ *    Nokia 5110 5  -> D5
+ *    Nokia 5110 6  -> D4
+ *    Nokia 5110 7  -> D3
+ *    Nokia 5110 8  -> 3.3V cez 330Ω rezistor (podsvietenie)
  * 
  *  Potrebné knižnice (Arduino Library Manager):
  *    - Adafruit PCD8544 Nokia 5110 LCD library
