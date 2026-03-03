@@ -11,6 +11,7 @@ Zbierka Arduino sketchov pre rôzne senzory, moduly a periférie. Každý modul 
 | DHT11 | ✅ | ✅ | — | — | Digitálny (D2) |
 | DHT22 | ✅ | ✅ | — | — | Digitálny (D3) |
 | LM35 | ✅ | — | — | — | Analog (A0) |
+| NTC 10kΩ | ✅ | — | — | — | Analog (A1) |
 | DS18B20 | ✅ | — | — | — | 1-Wire (D4) |
 | BME280 | ✅ | ✅ | ✅ | — | I²C (0x76) |
 | BMP180 | ✅ | — | ✅ | — | I²C (0x77) |
@@ -51,6 +52,8 @@ ARE-00/
 │   └── DHT22_Teplota.ino
 ├── LM35_Teplota/
 │   └── LM35_Teplota.ino
+├── NTC10k_Teplota/
+│   └── NTC10k_Teplota.ino
 ├── DS18B20_Teplota/
 │   └── DS18B20_Teplota.ino
 ├── BME280_Teplota/
@@ -112,6 +115,22 @@ ARE-00/
 | VOUT | A0 |
 
 > Žiadny pull-up rezistor nie je potrebný. Pre dlhšie káble odporúčam 0.1µF kondenzátor pri senzore.
+
+### NTC 10kΩ (Napäťový delič)
+
+| Komponent | Zapojenie |
+|-----------|----------|
+| 10kΩ fixný rezistor | 5V → [uzol A1] |
+| NTC 10kΩ termistor | [uzol A1] → GND |
+| Arduino A1 | [uzol A1] |
+
+```
+5V ─── [10kΩ fixný] ───┬─── [NTC 10kΩ] ─── GND
+                        │
+                        A1
+```
+
+> Používa Beta rovnicu (B=3950). Hodnotu BETA upraviť podľa datasheetu vášho NTC. Bežné hodnoty: 3380, 3435, 3950, 4300.
 
 ### DS18B20
 
@@ -293,7 +312,7 @@ Všetky knižnice sa dajú nainštalovať cez **Arduino Library Manager** (`Sket
 | Adafruit PCD8544 Nokia 5110 LCD library | Nokia 5110 | Adafruit |
 | Adafruit GFX Library | Nokia 5110 (závislosť) | Adafruit |
 
-> **LM35**, **HC-SR04**, **PIR**, **Relay**, **DC Motor**, **TCA9548A** a **7-Segment** nevyžadujú externé knižnice.
+> **LM35**, **NTC 10kΩ**, **HC-SR04**, **PIR**, **Relay**, **DC Motor**, **TCA9548A** a **7-Segment** nevyžadujú externé knižnice.
 
 ## Návod na použitie
 
@@ -320,6 +339,12 @@ Každý sketch vypisuje dáta vo formáte JSON na sériový port (115200 baud) k
 
 ```json
 {"senzor":"LM35","teplota":23.50,"jednotka":"°C"}
+```
+
+### NTC 10kΩ
+
+```json
+{"senzor":"NTC_10k","teplota":23.50,"odpor_ohm":10000,"adc":512,"jednotka":"°C"}
 ```
 
 ### DS18B20
