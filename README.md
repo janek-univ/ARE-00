@@ -1,17 +1,18 @@
-# ARE-00 – Arduino Meranie Teploty
+# ARE-00 – Arduino Meranie Teploty a Okolitých Veličín
 
-Zbierka Arduino sketchov pre meranie teploty (a ďalších veličín) s 6 rôznymi senzormi. Každý senzor má samostatný sketch optimalizovaný pre **Arduino Nano** (ATmega328P).
+Zbierka Arduino sketchov pre meranie teploty, vlhkosti, tlaku a intenzity svetla so 7 rôznymi senzormi. Každý senzor má samostatný sketch optimalizovaný pre **Arduino Nano** (ATmega328P).
 
 ## Prehľad senzorov
 
-| Senzor | Teplota | Vlhkosť | Tlak | Typ | Rozhranie |
-|--------|:-------:|:-------:|:----:|-----|-----------|
-| DHT11 | ✅ | ✅ | — | Digitálny | 1-Wire (D2) |
-| DHT22 | ✅ | ✅ | — | Digitálny | 1-Wire (D3) |
-| LM35 | ✅ | — | — | Analógový | Analog (A0) |
-| DS18B20 | ✅ | — | — | Digitálny | 1-Wire (D4) |
-| BME280 | ✅ | ✅ | ✅ | Digitálny | I²C (A4/A5) |
-| BMP180 | ✅ | — | ✅ | Digitálny | I²C (A4/A5) |
+| Senzor | Teplota | Vlhkosť | Tlak | Svetlo | Typ | Rozhranie |
+|--------|:-------:|:-------:|:----:|:------:|-----|-----------|
+| DHT11 | ✅ | ✅ | — | — | Digitálny | 1-Wire (D2) |
+| DHT22 | ✅ | ✅ | — | — | Digitálny | 1-Wire (D3) |
+| LM35 | ✅ | — | — | — | Analógový | Analog (A0) |
+| DS18B20 | ✅ | — | — | — | Digitálny | 1-Wire (D4) |
+| BME280 | ✅ | ✅ | ✅ | — | Digitálny | I²C (A4/A5) |
+| BMP180 | ✅ | — | ✅ | — | Digitálny | I²C (A4/A5) |
+| VEML7700 | — | — | — | ✅ | Digitálny | I²C (A4/A5) |
 
 ## Štruktúra projektu
 
@@ -30,8 +31,10 @@ ARE-00/
 │   └── DS18B20_Teplota.ino
 ├── BME280_Teplota/
 │   └── BME280_Teplota.ino
-└── BMP180_Teplota/
-    └── BMP180_Teplota.ino
+├── BMP180_Teplota/
+│   └── BMP180_Teplota.ino
+└── VEML7700_Svetlo/
+    └── VEML7700_Svetlo.ino
 ```
 
 ## Zapojenie
@@ -98,6 +101,17 @@ ARE-00/
 
 > I²C adresa: `0x77` (fixná). BME280 a BMP180 môžu byť na rovnakej I²C zbernici, pretože majú rôzne adresy.
 
+### VEML7700 (I²C)
+
+| Pin VEML7700 | Arduino Nano |
+|--------------|-------------|
+| VIN | 3.3V (alebo 5V ak má doska regulátor) |
+| GND | GND |
+| SDA | A4 |
+| SCL | A5 |
+
+> I²C adresa: `0x10` (fixná). Môže byť na rovnakej I²C zbernici s BME280 a BMP180.
+
 ## Potrebné knižnice
 
 Všetky knižnice sa dajú nainštalovať cez **Arduino Library Manager** (`Sketch` → `Include Library` → `Manage Libraries...`):
@@ -111,6 +125,7 @@ Všetky knižnice sa dajú nainštalovať cez **Arduino Library Manager** (`Sket
 | Adafruit BME280 Library | BME280 | Adafruit |
 | Adafruit BusIO | BME280 (závislosť) | Adafruit |
 | Adafruit BMP085 Library | BMP180 | Adafruit |
+| Adafruit VEML7700 Library | VEML7700 | Adafruit |
 
 > **LM35** nevyžaduje žiadnu externú knižnicu – používa len `analogRead()`.
 
@@ -157,6 +172,12 @@ Každý sketch vypisuje dáta vo formáte JSON na sériový port (115200 baud) k
 
 ```json
 {"senzor":"BMP180","teplota":23.50,"tlak":1013.25,"jednotka":"°C"}
+```
+
+### VEML7700
+
+```json
+{"senzor":"VEML7700","lux":254.30,"biele_svetlo":312.00,"als":298.00,"jednotka":"lx"}
 ```
 
 ### Chybový výstup (príklad)
